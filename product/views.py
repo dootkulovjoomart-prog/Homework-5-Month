@@ -72,9 +72,9 @@ def review_detail_api_view(request, id):
     elif request.method == 'PUT':
         serializer = ReviewsValidateSErializers(data = request.data)
         serializer.is_valid(raise_exception=True)
-        review.text = request.data.get('text')
-        review.stars = request.data.get('stars')
-        review.product_id = request.data.get('product_id')
+        review.text = serializer.validated_data.get('text')
+        review.stars = serializer.validated_data.get('stars')
+        review.product_id = serializer.validated_data.get('product_id')
         review.save()
         return Response(status=status.HTTP_201_CREATED, 
                         data=ReviewDetailSerializer(review).data)

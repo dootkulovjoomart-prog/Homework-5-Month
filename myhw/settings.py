@@ -31,6 +31,8 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+    'rest_framework.authtoken',
+    'user',
     'rest_framework',
     'product',
     'django.contrib.admin',
@@ -40,6 +42,13 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
 ]
+
+
+REST_FRAMEWORK = {
+    'DEFAULT_AUTENTIFICATION_CLASSES':[
+        'rest_framework.authentification.TokenAuthentication'
+    ]
+}
 
 MIDDLEWARE = [
     'querycount.middleware.QueryCountMiddleware',
@@ -119,7 +128,7 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/6.0/topics/i18n/
 
-LANGUAGE_CODE = 'en-us'
+LANGUAGE_CODE = 'ru'
 
 TIME_ZONE = 'UTC'
 

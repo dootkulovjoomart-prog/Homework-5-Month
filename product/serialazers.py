@@ -69,3 +69,9 @@ class ReviewsValidateSErializers(serializers.Serializer):
             except Review.DoesNotExist:
                 raise ValidationError('Product does not exixt ')
             return product_id
+        
+
+class CreateProductSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Product
+        fields = '__all__'

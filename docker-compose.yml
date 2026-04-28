@@ -1,0 +1,25 @@
+version: '3'
+
+services: 
+  product_api:
+    build:
+      context: .  
+    command: sh -c "python manage.py runserver 0.0.0.0:8000"
+    ports:
+      - "8002:8000"
+    depends_on:
+      - product_data
+    env_file:
+      - .env  
+  product_data:
+    image: postgres:14
+    environment:
+      POSTGRES_DB: db_product_kg 
+      POSTGRES_USER: db_product_kg_user
+      POSTGRES_PASSWORD: "1234"
+    volumes: 
+      - data:/var/lib/postgresql/data
+
+volumes:
+  data:
+  

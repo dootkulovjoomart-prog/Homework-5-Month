@@ -1,9 +1,22 @@
 from django.db import models
-from django.contrib.auth.models import User
-# Create your models here.
+from django.contrib.auth.models import AbstractBaseUser  , PermissionsMixin 
+from user.managers import CustomUserManager
+
+class CustomUser(AbstractBaseUser , PermissionsMixin):
+    email = models.EmailField(unique=True)
+    is_active = models.BooleanField(default=False)
+    is_staff = models.BooleanField(default=False)
+    phone_namber = models.CharField(max_length=9 , blank=True  , null=True)
+
+    objects = CustomUserManager()
+    REQUIRED_FIELDS = ["phone_namber"]
+    USERNAME_FIELD = "email"
+
+    def __str__(self):
+        return self.email
 
 class UserConfirm(models.Model):
-    user = models.OneToOneField(User , on_delete= models.CASCADE)
+    user = models.OneToOneField(CustomUser, on_delete= models.CASCADE)
     code = models.CharField(max_length=6)
 
     def __str__(self):

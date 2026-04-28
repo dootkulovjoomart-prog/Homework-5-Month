@@ -16,14 +16,14 @@ class RegisterApiView(CreateAPIView):
         serializer = RegisterSerialiser(data= request.data)
         serializer.is_valid(raise_exception=True)
 
-        phone_namber = serializer.validated_data.get('phone_namber')
+        phone_number = serializer.validated_data.get('phone_number')
         email = serializer.validated_data.get('email')
         password = serializer.validated_data.get('password')
 
 
         user = CustomUser.objects.create_user(
             email = email, 
-            phone_namber = phone_namber ,
+            phone_number = phone_number ,
             password = password , 
             is_active = False
         )

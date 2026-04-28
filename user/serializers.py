@@ -9,7 +9,7 @@ class UserBaseSerializer(serializers.Serializer):
     password = serializers.CharField()
 
 class RegisterSerialiser(serializers.Serializer):
-    phone_namber = serializers.CharField(max_length=9 ,required=False , allow_blank=True  , allow_null=True) 
+    phone_number = serializers.CharField(max_length=15 ,required=False , allow_blank=True  , allow_null=True) 
     email = serializers.EmailField()
     password = serializers.CharField()
 

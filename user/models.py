@@ -6,7 +6,7 @@ class CustomUser(AbstractBaseUser , PermissionsMixin):
     email = models.EmailField(unique=True)
     is_active = models.BooleanField(default=False)
     is_staff = models.BooleanField(default=False)
-    phone_namber = models.CharField(max_length=9 , blank=True  , null=True)
+    phone_number = models.CharField(max_length=15 , blank=True  , null=True)
 
     objects = CustomUserManager()
     REQUIRED_FIELDS = ["phone_namber"]

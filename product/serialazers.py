@@ -13,7 +13,7 @@ class CategoryListSerializer(serializers.ModelSerializer):
 class ProductListSerializer(serializers.ModelSerializer):
     class Meta :
         model = Product
-        fields = 'id title description price category reviews category_list rating'.split()
+        fields = 'id title description price category owner category_list rating'.split()
         # depth = 1
     def get_rating(self , product ):
         return product.rating()

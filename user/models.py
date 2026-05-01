@@ -9,7 +9,7 @@ class CustomUser(AbstractBaseUser , PermissionsMixin):
     phone_number = models.CharField(max_length=15 , blank=True  , null=True)
 
     objects = CustomUserManager()
-    REQUIRED_FIELDS = ["phone_namber"]
+    REQUIRED_FIELDS = ["phone_number"]
     USERNAME_FIELD = "email"
 
     def __str__(self):

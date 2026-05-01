@@ -11,6 +11,8 @@ from rest_framework.generics import (
     GenericAPIView
 )
 
+from common.permissions import IsAuth , IsAnon , EditWithin15Minutes, IsModerator
+
 from rest_framework.viewsets import ModelViewSet
 
 
@@ -28,6 +30,7 @@ class CategoryListAPIView(ListCreateAPIView):
     queryset = Category.objects.all()
     serializer_class = CategoryListSerializer
     pagination_class = PageNumberPagination
+    
 
 class CateforyDetailAPIView(RetrieveUpdateDestroyAPIView):
     queryset = Category.objects.all()
@@ -40,6 +43,7 @@ class ProductViewSet(ModelViewSet):
     serializer_class = ProductListSerializer
     pagination_class = PageNumberPagination
     lookup_field = 'id'
+    permission_classes = [IsAnon|IsModerator]
 
     def get_serializer_class(self):
         if self.request.method in ['GET' , 'POST']:

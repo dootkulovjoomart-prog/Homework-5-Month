@@ -15,7 +15,7 @@ class RegisterSerialiser(serializers.Serializer):
 
     def validate_username(self , email ):
         try:
-            User.objects.get(email = email)
+            CustomUser.objects.get(email = email)
         except:
             return email
         raise ValidationError('User already exists ! ')

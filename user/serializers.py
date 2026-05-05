@@ -2,6 +2,18 @@ from rest_framework import serializers
 from django.contrib.auth.models import User
 from rest_framework.exceptions import ValidationError
 from .models import CustomUser , UserConfirm
+from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
+
+class CustomTokenObtainPairSerializer(TokenObtainPairSerializer):
+
+    @classmethod
+    def get_token(cls, user):
+        token = super().get_token(user)
+        token['email'] = user.email
+        token['birthdate'] = str(user.birthdate)
+        return token
+
+
 
 
 class UserBaseSerializer(serializers.Serializer):
@@ -12,6 +24,7 @@ class RegisterSerialiser(serializers.Serializer):
     phone_number = serializers.CharField(max_length=15 ,required=False , allow_blank=True  , allow_null=True) 
     email = serializers.EmailField()
     password = serializers.CharField()
+    birthdate = serializers.DateField()
 
     def validate_username(self , email ):
         try:

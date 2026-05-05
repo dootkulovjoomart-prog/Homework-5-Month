@@ -1,6 +1,7 @@
 from rest_framework import serializers  
 from .models import Category , Product , Review 
 from rest_framework.exceptions import ValidationError
+
  
 class CategoryListSerializer(serializers.ModelSerializer):
     products = serializers.SerializerMethodField()
@@ -11,13 +12,12 @@ class CategoryListSerializer(serializers.ModelSerializer):
     def get_products(self,obj):
         return obj.products.count()
 class ProductListSerializer(serializers.ModelSerializer):
+    owner = serializers.HiddenField(default=serializers.CurrentUserDefault())
     class Meta :
         model = Product
-        fields = 'id title description price category owner category_list rating'.split()
-        # depth = 1
+        fields = '__all__'
     def get_rating(self , product ):
         return product.rating()
-    
 class ReviewListSerializer(serializers.ModelSerializer):
     class Meta:
         model = Review
@@ -75,3 +75,4 @@ class CreateProductSerializer(serializers.ModelSerializer):
     class Meta:
         model = Product
         fields = '__all__'
+        read_only_fields = ('owner',)

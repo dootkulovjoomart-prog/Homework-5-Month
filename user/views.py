@@ -1,13 +1,17 @@
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework import status
-from .serializers import RegisterSerialiser  ,AuthValidateSerializer , ConfirmSerializer
+from .serializers import RegisterSerialiser  ,AuthValidateSerializer , ConfirmSerializer , CustomTokenObtainPairSerializer
 from rest_framework.generics import CreateAPIView
 from django.contrib.auth import authenticate
 from rest_framework.authtoken.models import Token
 import random
 from .models import UserConfirm , CustomUser
+from rest_framework_simplejwt.views import TokenObtainPairView  
 
+
+class CustomTokenObtainPairView(TokenObtainPairView):
+    serializer_class = CustomTokenObtainPairSerializer
 
 class RegisterApiView(CreateAPIView):
     serializer_class = RegisterSerialiser
@@ -19,12 +23,14 @@ class RegisterApiView(CreateAPIView):
         phone_number = serializer.validated_data.get('phone_number')
         email = serializer.validated_data.get('email')
         password = serializer.validated_data.get('password')
+        birthdate = serializer.validated_data.get('birthdate')
 
 
         user = CustomUser.objects.create_user(
             email = email, 
             phone_number = phone_number ,
             password = password , 
+            birthdate = birthdate , 
             is_active = False
         )
 

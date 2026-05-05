@@ -36,6 +36,8 @@ ALLOWED_HOSTS = ['*']
 # Application definition
 
 INSTALLED_APPS = [
+    'rest_framework_simplejwt.token_blacklist',
+    'rest_framework_simplejwt',
     'user',
     'drf_yasg',
     'rest_framework.authtoken',
@@ -52,7 +54,9 @@ INSTALLED_APPS = [
 
 REST_FRAMEWORK = {
     'DEFAULT_AUTENTIFICATION_CLASSES':[
-        'rest_framework.authentification.TokenAuthentication'
+        'rest_framework.authentification.TokenAuthentication',
+
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
     ],
     'PAGE_SIZE' : 3
 }
@@ -172,4 +176,16 @@ SWAGGER_SETTINGS = {
             "in": "header"
         }
     }
+}
+
+
+from datetime import timedelta
+...
+
+SIMPLE_JWT = {
+    "ACCESS_TOKEN_LIFETIME": timedelta(minutes=15),
+    "REFRESH_TOKEN_LIFETIME": timedelta(days=3),
+    "ROTATE_REFRESH_TOKENS": False,
+    "BLACKLIST_AFTER_ROTATION": False,
+    "UPDATE_LAST_LOGIN": False
 }

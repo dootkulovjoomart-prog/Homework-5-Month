@@ -15,6 +15,7 @@ from common.permissions import IsAuth , IsAnon , EditWithin15Minutes, IsModerato
 
 from rest_framework.viewsets import ModelViewSet
 
+from common.validators import validate_age_from_token
 
 from rest_framework.mixins import (
     ListModelMixin , 
@@ -40,10 +41,15 @@ class CateforyDetailAPIView(RetrieveUpdateDestroyAPIView):
 
 class ProductViewSet(ModelViewSet):
     queryset = Product.objects.all()
-    serializer_class = ProductListSerializer
+    serializer_class = CreateProductSerializer
     pagination_class = PageNumberPagination
     lookup_field = 'id'
     permission_classes = [IsAnon|IsModerator]
+
+    def perform_create(self, serializer):
+        validate_age_from_token(self.request)
+        serializer.save(owner = self.request.user)
+    
 
     def get_serializer_class(self):
         if self.request.method in ['GET' , 'POST']:

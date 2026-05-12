@@ -92,5 +92,4 @@ class ConfirmAPIView(CreateAPIView):
         except CustomUser.DoesNotExist:
             return Response({'error not Found user'} , status=status.HTTP_401_UNAUTHORIZED)
         
-            
-   
+

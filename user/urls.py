@@ -6,6 +6,10 @@ from rest_framework_simplejwt.views import (
     TokenVerifyView
 )
 
+from user.google_oauth  import GoogleLoginAPIView
+
+
+
 
 
 urlpatterns = [
@@ -14,5 +18,6 @@ urlpatterns = [
     path('api/v1/confirm/' , ConfirmAPIView.as_view()),
     path('api/token/', CustomTokenObtainPairView.as_view(), name='token_obtain_pair'),
     path('api/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
-    path('api/token/verify/', TokenVerifyView.as_view(), name='token_verify')
+    path('api/token/verify/', TokenVerifyView.as_view(), name='token_verify'),
+    path('api/google-login/', GoogleLoginAPIView.as_view()),
 ]

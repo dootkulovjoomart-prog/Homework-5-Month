@@ -1,8 +1,8 @@
 from rest_framework import serializers
-from django.contrib.auth.models import User
 from rest_framework.exceptions import ValidationError
-from .models import CustomUser , UserConfirm
+from .models import CustomUser 
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
+from . import utils
 
 
 class OauthCodeSerializer(serializers.Serializer):
@@ -57,23 +57,19 @@ class ConfirmSerializer(serializers.Serializer):
     #         raise ValidationError('Error')
     #     return attrs
     def validate(self, attrs):
-        user_id = attrs.get('user_id')
+        email = attrs.get('email')
         code = attrs.get('code')
 
         try: 
-            user = CustomUser.objects.get(id=user_id)
+            user = CustomUser.objects.get(email = email)
         except CustomUser.DoesNotExist:
             raise ValidationError('User not found')
+        if not utils.verifity_confirmation(email , code):
+            raise serializers.ValidationError("error code  ")
         
-        try:
-            confirm = UserConfirm.objects.get(user=user)
-        except UserConfirm.DoesNotExist:
-            raise ValidationError('Confirm not found')
-
-        print("DB CODE:", confirm.code)
-        print("INPUT CODE:", code)
-
-        if confirm.code != code:
-            raise ValidationError('Invalid code')
-
+        attrs['user'] = user
         return attrs
+    def save(self , **kwargs):
+        user = self.validated_data['user']
+        user.is_active = True
+        user.save()

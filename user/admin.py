@@ -1,11 +1,11 @@
 from django.contrib import admin
-from .models import UserConfirm , CustomUser
+from .models import  CustomUser
 from django.contrib.auth.admin import UserAdmin
 
 # Register your models here.
-@admin.register(UserConfirm)
-class UserConfirmAdmin(admin.ModelAdmin):
-    list_display = ['id', 'user' , 'code' ]
+# @admin.register(UserConfirm)
+# class UserConfirmAdmin(admin.ModelAdmin):
+#     list_display = ['id', 'user' , 'code' ]
 
 
 @admin.register(CustomUser)

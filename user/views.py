@@ -6,9 +6,9 @@ from rest_framework.generics import CreateAPIView
 from django.contrib.auth import authenticate
 from rest_framework.authtoken.models import Token
 import random
-from .models import UserConfirm , CustomUser
+from .models import  CustomUser
 from rest_framework_simplejwt.views import TokenObtainPairView  
-
+from . import utils
 
 class CustomTokenObtainPairView(TokenObtainPairView):
     serializer_class = CustomTokenObtainPairSerializer
@@ -25,6 +25,12 @@ class RegisterApiView(CreateAPIView):
         password = serializer.validated_data.get('password')
         birthdate = serializer.validated_data.get('birthdate')
 
+        if CustomUser.objects.filter(email=email).exists():
+            return Response(
+                {"error": "User already exists"},
+                status=status.HTTP_400_BAD_REQUEST
+            )
+
 
         user = CustomUser.objects.create_user(
             email = email, 
@@ -34,11 +40,8 @@ class RegisterApiView(CreateAPIView):
             is_active = False
         )
 
-        code = str(random.randint(100000 , 999999))
-        UserConfirm.objects.create(
-            user = user,
-            code = code 
-        )
+        code = utils.generate_confirm_code(email)
+        utils.save_code_to_cache(email , code)
         
         print('Code add' , code)
 

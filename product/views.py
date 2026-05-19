@@ -39,6 +39,9 @@ class CateforyDetailAPIView(RetrieveUpdateDestroyAPIView):
     pagination_class = PageNumberPagination
     lookup_field = 'id'
 
+from user.tasks import hello_task
+from user.tasks import send_email_wellcome
+
 class ProductViewSet(ModelViewSet):
     queryset = Product.objects.all()
     serializer_class = CreateProductSerializer
@@ -46,10 +49,15 @@ class ProductViewSet(ModelViewSet):
     lookup_field = 'id'
     permission_classes = [IsAnon|IsModerator]
 
+   
+   
+
     def perform_create(self, serializer):
         validate_age_from_token(self.request)
         serializer.save(owner = self.request.user)
-    
+
+        hello_task.delay(self.request.user.email)
+        
 
     def get_serializer_class(self):
         if self.request.method in ['GET' , 'POST']:

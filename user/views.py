@@ -13,6 +13,9 @@ from . import utils
 class CustomTokenObtainPairView(TokenObtainPairView):
     serializer_class = CustomTokenObtainPairSerializer
 
+from user.tasks import send_email_wellcome
+from user.tasks import delete_email
+
 class RegisterApiView(CreateAPIView):
     serializer_class = RegisterSerialiser
     def post(self , request):
@@ -45,10 +48,14 @@ class RegisterApiView(CreateAPIView):
         
         print('Code add' , code)
 
+        send_email_wellcome.delay(user.email)
+
         return Response(
             status=status.HTTP_201_CREATED,
             data={'user_id' : user.id }
         )   
+  
+    
 
 
 class AuthorizatiionAPIView(CreateAPIView):

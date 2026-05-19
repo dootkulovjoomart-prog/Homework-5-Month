@@ -189,3 +189,24 @@ SIMPLE_JWT = {
     "BLACKLIST_AFTER_ROTATION": False,
     "UPDATE_LAST_LOGIN": False
 }
+
+
+CELERY_BROKER_URL = 'redis://127.0.0.1:6379/10'
+
+CELERY_RESULT_BACKEND = 'redis://127.0.0.1:6379/10'
+
+CELERY_ACCEPT_CONTENT = ['json']
+
+CELERY_TASK_SERIALIZER = 'json'
+
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+
+
+from celery.schedules import crontab
+
+CELERY_BEAT_SCHEDULE = {
+    'delete-unverified-users-every-night': {
+        'task': 'user.tasks.delete_unverified_users',
+        'schedule': crontab(hour=3, minute=0),  
+    },
+}
